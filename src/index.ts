@@ -55,7 +55,7 @@ async function initializeApp() {
 		if (localStorage.getItem("functions-alpha") == null) localStorage.setItem("functions-alpha", "01.0");
 		if (localStorage.getItem("operators-color") == null) localStorage.setItem("operators-color", "#ff4444");
 		if (localStorage.getItem("operators-alpha") == null) localStorage.setItem("operators-alpha", "01.0");
-		if (localStorage.getItem("numbers-color") == null) localStorage.setItem("numbers-color", "#0000ff");
+		if (localStorage.getItem("numbers-color") == null) localStorage.setItem("numbers-color", "#ffffff");
 		if (localStorage.getItem("numbers-alpha") == null) localStorage.setItem("numbers-alpha", "0.85");
 		if (localStorage.getItem("buttons-color") == null) localStorage.setItem("buttons-color", "#383838");
 		if (localStorage.getItem("buttons-alpha") == null) localStorage.setItem("buttons-alpha", "0.55");
