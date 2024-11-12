@@ -178,8 +178,8 @@ function setupButtonListeners() {
 function setupKeyboardSupport() {
     var calculatorElement = document.getElementById("calculator");
     if (calculatorElement) {
-        calculatorElement.addEventListener("focusin", function () { return document.getElementById("status").style.backgroundColor = "#00F00035"; });
-        calculatorElement.addEventListener("focusout", function () { return document.getElementById("status").style.backgroundColor = "#F0000035"; });
+        calculatorElement.addEventListener("focusin", function () { return document.getElementById("status").style.backgroundColor = "#00F00055"; });
+        calculatorElement.addEventListener("focusout", function () { return document.getElementById("status").style.backgroundColor = "#F0000055"; });
         calculatorElement.addEventListener("click", function () { return calculatorElement.focus(); });
         calculatorElement.addEventListener("keydown", function (event) {
             if (!calculatorElement.contains(document.activeElement))
@@ -495,6 +495,8 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
     }
 };
 
+var DEFAULT_SETTINGS_WIDTH = 420;
+var DEFAULT_SETTINGS_HEIGHT = 200;
 // Check if running inside Alt1
 if (window.alt1) {
     alt1.identifyAppUrl("./appconfig.json");
@@ -502,6 +504,29 @@ if (window.alt1) {
 else {
     document.getElementById("addtoalt1").style.display = "block";
 }
+// Add settings button listener
+document.getElementById("status").addEventListener("click", function () {
+    var left = window.screenX + (window.innerWidth / 2) - (DEFAULT_SETTINGS_WIDTH / 2);
+    var top = window.screenY + (window.innerHeight / 2) - (DEFAULT_SETTINGS_HEIGHT / 2);
+    var settingsWindow = window.open("./settings.html", "_blank", "width=".concat(DEFAULT_SETTINGS_WIDTH, ",height=").concat(DEFAULT_SETTINGS_HEIGHT, ",left=").concat(left, ",top=").concat(top));
+    settingsWindow === null || settingsWindow === void 0 ? void 0 : settingsWindow.addEventListener('keyup', function (e) {
+        if ((e.which || e.keyCode) === 116) {
+            e.preventDefault(); // Prevent F5 key press from refreshing the page
+        }
+    });
+    settingsWindow === null || settingsWindow === void 0 ? void 0 : settingsWindow.addEventListener('beforeunload', function () {
+        // Setup the colors
+        applyStoredColor("functions-color", "functions-alpha", ".functions");
+        applyStoredColor("operators-color", "operators-alpha", ".operators");
+        applyStoredColor("numbers-color", "numbers-alpha", ".numbers");
+        applyStoredColor("buttons-color", "buttons-alpha", ".buttons", true);
+        applyStoredColor("buttons-color", "buttons-alpha", "#display", true);
+        applyStoredColor("output-color", "output-alpha", "#display");
+        console.warn("Settings Closed!");
+        settingsWindow === null || settingsWindow === void 0 ? void 0 : settingsWindow.window.console.warn("Settings Saved!");
+    });
+    console.log("Open Settings!");
+});
 // Initialize the app
 document.addEventListener("DOMContentLoaded", initializeApp);
 function initializeApp() {
@@ -512,12 +537,38 @@ function initializeApp() {
                     document.getElementById("addtoalt1").style.display = "block";
                     document.getElementById("addtoalt1").innerHTML = "You should click <a href='https://calc.unlishema.org'>Add App</a> at top right";
                 }
+                // Setup default colors
+                if (localStorage.getItem("functions-color") == null)
+                    localStorage.setItem("functions-color", "#fffb00");
+                if (localStorage.getItem("functions-alpha") == null)
+                    localStorage.setItem("functions-alpha", "0.5");
+                if (localStorage.getItem("operators-color") == null)
+                    localStorage.setItem("operators-color", "#ff0000");
+                if (localStorage.getItem("operators-alpha") == null)
+                    localStorage.setItem("operators-alpha", "0.8");
+                if (localStorage.getItem("numbers-color") == null)
+                    localStorage.setItem("numbers-color", "#0000ff");
+                if (localStorage.getItem("numbers-alpha") == null)
+                    localStorage.setItem("numbers-alpha", "0.65");
+                if (localStorage.getItem("buttons-color") == null)
+                    localStorage.setItem("buttons-color", "#383838");
+                if (localStorage.getItem("buttons-alpha") == null)
+                    localStorage.setItem("buttons-alpha", "0.55");
+                if (localStorage.getItem("output-color") == null)
+                    localStorage.setItem("output-color", "#ffffff");
+                if (localStorage.getItem("output-alpha") == null)
+                    localStorage.setItem("output-alpha", "0.75");
+                // Setup the colors
+                applyStoredColor("functions-color", "functions-alpha", ".functions");
+                applyStoredColor("operators-color", "operators-alpha", ".operators");
+                applyStoredColor("numbers-color", "numbers-alpha", ".numbers");
+                applyStoredColor("buttons-color", "buttons-alpha", ".buttons", true);
+                applyStoredColor("buttons-color", "buttons-alpha", "#display", true);
+                applyStoredColor("output-color", "output-alpha", "#display");
                 _calculator__WEBPACK_IMPORTED_MODULE_0__.setupButtonListeners();
                 _calculator__WEBPACK_IMPORTED_MODULE_0__.setupKeyboardSupport();
                 _calculator__WEBPACK_IMPORTED_MODULE_0__.setupClipboardSupport();
                 _calculator__WEBPACK_IMPORTED_MODULE_0__.setupRightClickMenu();
-                // TODO Add in keyboard support
-                // TODO Override Right click to add a copy and paste option
             }
             catch (error) {
                 console.error("Initialization error:", error);
@@ -525,6 +576,25 @@ function initializeApp() {
             return [2 /*return*/];
         });
     });
+}
+function applyStoredColor(colorKey, alphaKey, selector, bgColor) {
+    if (bgColor === void 0) { bgColor = false; }
+    if (localStorage.getItem(colorKey) != null && localStorage.getItem(alphaKey) != null) {
+        var elements = document.querySelectorAll(selector);
+        var hexColor = localStorage.getItem(colorKey);
+        var alpha = parseFloat(localStorage.getItem(alphaKey));
+        // Convert hex color to rgba
+        var red = parseInt(hexColor.substring(1, 3), 16);
+        var green = parseInt(hexColor.substring(3, 5), 16);
+        var blue = parseInt(hexColor.substring(5, 7), 16);
+        var rgbaColor_1 = "rgba(".concat(red, ", ").concat(green, ", ").concat(blue, ", ").concat(alpha, ")");
+        elements.forEach(function (element) {
+            if (bgColor)
+                element.style.backgroundColor = rgbaColor_1;
+            else
+                element.style.color = rgbaColor_1;
+        });
+    }
 }
 
 })();

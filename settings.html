@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator Settings</title>
+    <link rel="icon" href="./images/icon.png" type="image/png">
+    <link rel="stylesheet" href="./settings.css">
+</head>
+
+<body class="nis">
+
+    <h2 class="nistext">Settings</h2>
+
+    <div id="import-export">
+        <span class="nisbutton" id="import-button" onclick="importSettings();">
+            Import Settings
+        </span>
+        <span class="nisbutton" id="export-button" onclick="exportSettings();">
+            Export Settings
+        </span>
+    </div>
+
+    <div class="color-container">
+        <div>
+            <label for="functions-color">Functions</label>
+            <input type="color" id="functions-color" value="#000000">
+            <label for="functions-alpha">Alpha</label>
+            <input class="nistext" type="number" id="functions-alpha" value="0" min="0.0" max="1.0" step="0.05">
+        </div>
+        <div>
+            <label for="operators-color">Operators</label>
+            <input type="color" id="operators-color" value="#000000">
+            <label for="operators-alpha">Alpha</label>
+            <input class="nistext" type="number" id="operators-alpha" value="0" min="0.0" max="1.0" step="0.05">
+        </div>
+        <div>
+            <label for="numbers-color">Numbers</label>
+            <input type="color" id="numbers-color" value="#000000">
+            <label for="numbers-alpha">Alpha</label>
+            <input class="nistext" type="number" id="numbers-alpha" value="0" min="0.0" max="1.0" step="0.05">
+        </div>
+        <div>
+            <label for="buttons-color">Buttons</label>
+            <input type="color" id="buttons-color" value="#000000">
+            <label for="buttons-alpha">Alpha</label>
+            <input class="nistext" type="number" id="buttons-alpha" value="0" min="0.0" max="1.0" step="0.05">
+        </div>
+        <div>
+            <label for="output-color">Output</label>
+            <input type="color" id="output-color" value="#000000">
+            <label for="output-alpha">Alpha</label>
+            <input class="nistext" type="number" id="output-alpha" value="0" min="0.0" max="1.0" step="0.05">
+        </div>
+    </div>
+
+    <div class="nisbutton" id="close-button" onclick="window.close();">Close Settings</div>
+    <div id="copyright">Copyright &copy;2021 Unlishema Dragonsworn</div>
+
+    <script type="text/javascript">
+        function importSettings() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+
+            input.onchange = async (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        for (const key in data) {
+                            localStorage.setItem(key, data[key]);
+                        }
+                        alert('Settings imported successfully!');
+                        location.reload(); // Reload to apply changes
+                    } catch (error) {
+                        alert('Invalid JSON file format.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function exportSettings() {
+            const settings = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                settings[key] = localStorage.getItem(key);
+            }
+
+            const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'calc-settings.json';
+            a.click();
+
+            URL.revokeObjectURL(url); // Clean up
+            alert('Settings exported successfully!');
+        }
+
+        function getPresetIndex(index) {
+            return String(index).padStart(2, '0');
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("functions-color").value = localStorage.getItem("functions-color") || "#000000";
+            document.getElementById("functions-alpha").value = localStorage.getItem("functions-alpha") || "1";
+            document.getElementById("operators-color").value = localStorage.getItem("operators-color") || "#000000";
+            document.getElementById("operators-alpha").value = localStorage.getItem("operators-alpha") || "1";
+            document.getElementById("numbers-color").value = localStorage.getItem("numbers-color") || "#000000";
+            document.getElementById("numbers-alpha").value = localStorage.getItem("numbers-alpha") || "1";
+            document.getElementById("buttons-color").value = localStorage.getItem("buttons-color") || "#000000";
+            document.getElementById("buttons-alpha").value = localStorage.getItem("buttons-alpha") || "1";
+            document.getElementById("output-color").value = localStorage.getItem("output-color") || "#000000";
+            document.getElementById("output-alpha").value = localStorage.getItem("output-alpha") || "1";
+        });
+
+        document.getElementById("functions-color").addEventListener('input', (event) => {
+            localStorage.setItem("functions-color", document.getElementById("functions-color").value);
+        });
+
+        document.getElementById("functions-alpha").addEventListener('input', (event) => {
+            localStorage.setItem("functions-alpha", document.getElementById("functions-alpha").value);
+        });
+
+        document.getElementById("operators-color").addEventListener('input', (event) => {
+            localStorage.setItem("operators-color", document.getElementById("operators-color").value);
+        });
+
+        document.getElementById("operators-alpha").addEventListener('input', (event) => {
+            localStorage.setItem("operators-alpha", document.getElementById("operators-alpha").value);
+        });
+
+        document.getElementById("numbers-color").addEventListener('input', (event) => {
+            localStorage.setItem("numbers-color", document.getElementById("numbers-color").value);
+        });
+
+        document.getElementById("numbers-alpha").addEventListener('input', (event) => {
+            localStorage.setItem("numbers-alpha", document.getElementById("numbers-alpha").value);
+        });
+
+        document.getElementById("buttons-color").addEventListener('input', (event) => {
+            localStorage.setItem("buttons-color", document.getElementById("buttons-color").value);
+        });
+
+        document.getElementById("buttons-alpha").addEventListener('input', (event) => {
+            localStorage.setItem("buttons-alpha", document.getElementById("buttons-alpha").value);
+        });
+
+        document.getElementById("output-color").addEventListener('input', (event) => {
+            localStorage.setItem("output-color", document.getElementById("output-color").value);
+        });
+
+        document.getElementById("output-alpha").addEventListener('input', (event) => {
+            localStorage.setItem("output-alpha", document.getElementById("output-alpha").value);
+        });
+    </script>
+</body>
+
+</html>
