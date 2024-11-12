@@ -125,8 +125,8 @@ export function setupButtonListeners() {
 export function setupKeyboardSupport() {
     const calculatorElement = document.getElementById("calculator");
     if (calculatorElement) {
-        calculatorElement.addEventListener("focusin", () => document.getElementById("status").style.backgroundColor = "#00F00035");
-        calculatorElement.addEventListener("focusout", () => document.getElementById("status").style.backgroundColor = "#F0000035");
+        calculatorElement.addEventListener("focusin", () => document.getElementById("status").style.backgroundColor = "#00F00055");
+        calculatorElement.addEventListener("focusout", () => document.getElementById("status").style.backgroundColor = "#F0000055");
         calculatorElement.addEventListener("click", () => calculatorElement.focus());
 
         calculatorElement.addEventListener("keydown", (event) => {

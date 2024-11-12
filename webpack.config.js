@@ -49,6 +49,8 @@ module.exports = {
                 { from: path.resolve(__dirname, 'CNAME'), to: path.resolve(__dirname, 'dist/CNAME'), toType: 'file' },
                 { from: 'index.html', to: 'index.html' },
                 { from: 'index.css', to: 'index.css' },
+                { from: 'settings.html', to: 'settings.html' },
+                { from: 'settings.css', to: 'settings.css' },
                 { from: 'appconfig.json', to: 'appconfig.json' },
                 { from: 'version.json', to: 'version.json' },
                 // Folders we need
