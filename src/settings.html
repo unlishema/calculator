@@ -42,16 +42,16 @@
             <input class="nistext" type="number" id="numbers-alpha" value="0" min="0.0" max="1.0" step="0.05">
         </div>
         <div>
-            <label for="buttons-color">Buttons</label>
-            <input type="color" id="buttons-color" value="#000000">
-            <label for="buttons-alpha">Alpha</label>
-            <input class="nistext" type="number" id="buttons-alpha" value="0" min="0.0" max="1.0" step="0.05">
-        </div>
-        <div>
             <label for="output-color">Output</label>
             <input type="color" id="output-color" value="#000000">
             <label for="output-alpha">Alpha</label>
             <input class="nistext" type="number" id="output-alpha" value="0" min="0.0" max="1.0" step="0.05">
+        </div>
+        <div>
+            <label for="buttons-color">Background</label>
+            <input type="color" id="buttons-color" value="#000000">
+            <label for="buttons-alpha">Alpha</label>
+            <input class="nistext" type="number" id="buttons-alpha" value="0" min="0.0" max="1.0" step="0.05">
         </div>
     </div>
 
@@ -116,10 +116,10 @@
             document.getElementById("operators-alpha").value = localStorage.getItem("operators-alpha") || "1";
             document.getElementById("numbers-color").value = localStorage.getItem("numbers-color") || "#000000";
             document.getElementById("numbers-alpha").value = localStorage.getItem("numbers-alpha") || "1";
-            document.getElementById("buttons-color").value = localStorage.getItem("buttons-color") || "#000000";
-            document.getElementById("buttons-alpha").value = localStorage.getItem("buttons-alpha") || "1";
             document.getElementById("output-color").value = localStorage.getItem("output-color") || "#000000";
             document.getElementById("output-alpha").value = localStorage.getItem("output-alpha") || "1";
+            document.getElementById("buttons-color").value = localStorage.getItem("buttons-color") || "#000000";
+            document.getElementById("buttons-alpha").value = localStorage.getItem("buttons-alpha") || "1";
         });
 
         document.getElementById("functions-color").addEventListener('input', (event) => {
@@ -146,20 +146,20 @@
             localStorage.setItem("numbers-alpha", document.getElementById("numbers-alpha").value);
         });
 
-        document.getElementById("buttons-color").addEventListener('input', (event) => {
-            localStorage.setItem("buttons-color", document.getElementById("buttons-color").value);
-        });
-
-        document.getElementById("buttons-alpha").addEventListener('input', (event) => {
-            localStorage.setItem("buttons-alpha", document.getElementById("buttons-alpha").value);
-        });
-
         document.getElementById("output-color").addEventListener('input', (event) => {
             localStorage.setItem("output-color", document.getElementById("output-color").value);
         });
 
         document.getElementById("output-alpha").addEventListener('input', (event) => {
             localStorage.setItem("output-alpha", document.getElementById("output-alpha").value);
+        });
+
+        document.getElementById("buttons-color").addEventListener('input', (event) => {
+            localStorage.setItem("buttons-color", document.getElementById("buttons-color").value);
+        });
+
+        document.getElementById("buttons-alpha").addEventListener('input', (event) => {
+            localStorage.setItem("buttons-alpha", document.getElementById("buttons-alpha").value);
         });
     </script>
 </body>

@@ -5,11 +5,11 @@
 	"configUrl": "./appconfig.json",
 	"iconUrl": "./images/icon.png",
 	"defaultWidth": 206,
-	"defaultHeight": 195,
+	"defaultHeight": 199,
 	"minWidth": 206,
-	"minHeight": 195,
+	"minHeight": 199,
 	"maxWidth": 206,
-	"maxHeight": 195,
+	"maxHeight": 199,
 	"requestHandlers": [],
 	"activators": []
 }

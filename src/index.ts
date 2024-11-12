@@ -30,15 +30,18 @@ document.getElementById("status").addEventListener("click", () => {
 		applyStoredColor("functions-color", "functions-alpha", ".functions");
 		applyStoredColor("operators-color", "operators-alpha", ".operators");
 		applyStoredColor("numbers-color", "numbers-alpha", ".numbers");
+		applyStoredColor("output-color", "output-alpha", "#display");
 		applyStoredColor("buttons-color", "buttons-alpha", ".buttons", true);
 		applyStoredColor("buttons-color", "buttons-alpha", "#display", true);
-		applyStoredColor("output-color", "output-alpha", "#display");
 
 		console.warn("Settings Closed!");
 		settingsWindow?.window.console.warn("Settings Saved!");
 	});
 	console.log("Open Settings!");
 });
+
+// Listen for window resize and adjust font size dynamically
+window.addEventListener('resize', adjustFontSizeOnResize);
 
 // Initialize the app
 document.addEventListener("DOMContentLoaded", initializeApp);
@@ -52,28 +55,31 @@ async function initializeApp() {
 
 		// Setup default colors
 		if (localStorage.getItem("functions-color") == null) localStorage.setItem("functions-color", "#fffb44");
-		if (localStorage.getItem("functions-alpha") == null) localStorage.setItem("functions-alpha", "01.0");
+		if (localStorage.getItem("functions-alpha") == null) localStorage.setItem("functions-alpha", "1.0");
 		if (localStorage.getItem("operators-color") == null) localStorage.setItem("operators-color", "#ff4444");
 		if (localStorage.getItem("operators-alpha") == null) localStorage.setItem("operators-alpha", "01.0");
 		if (localStorage.getItem("numbers-color") == null) localStorage.setItem("numbers-color", "#ffffff");
 		if (localStorage.getItem("numbers-alpha") == null) localStorage.setItem("numbers-alpha", "0.85");
-		if (localStorage.getItem("buttons-color") == null) localStorage.setItem("buttons-color", "#383838");
-		if (localStorage.getItem("buttons-alpha") == null) localStorage.setItem("buttons-alpha", "0.55");
 		if (localStorage.getItem("output-color") == null) localStorage.setItem("output-color", "#ffffff");
 		if (localStorage.getItem("output-alpha") == null) localStorage.setItem("output-alpha", "0.75");
+		if (localStorage.getItem("buttons-color") == null) localStorage.setItem("buttons-color", "#383838");
+		if (localStorage.getItem("buttons-alpha") == null) localStorage.setItem("buttons-alpha", "0.55");
 
 		// Setup the colors
 		applyStoredColor("functions-color", "functions-alpha", ".functions");
 		applyStoredColor("operators-color", "operators-alpha", ".operators");
 		applyStoredColor("numbers-color", "numbers-alpha", ".numbers");
+		applyStoredColor("output-color", "output-alpha", "#display");
 		applyStoredColor("buttons-color", "buttons-alpha", ".buttons", true);
 		applyStoredColor("buttons-color", "buttons-alpha", "#display", true);
-		applyStoredColor("output-color", "output-alpha", "#display");
 
 		calculator.setupButtonListeners();
 		calculator.setupKeyboardSupport();
 		calculator.setupClipboardSupport();
 		calculator.setupRightClickMenu();
+
+		// Initial font size adjustment when the page loads
+		adjustFontSizeOnResize();
 	} catch (error) {
 		console.error("Initialization error:", error);
 	}
@@ -96,4 +102,13 @@ function applyStoredColor(colorKey, alphaKey, selector, bgColor = false) {
 			else element.style.color = rgbaColor;
 		});
 	}
+}
+
+function adjustFontSizeOnResize() {
+	const newFontSize = Math.max(window.innerWidth / 12, 14); // Adjust the factor (50) to control scaling
+	const elements = document.querySelectorAll(".functions, .operators, .numbers, #display, .buttons");
+
+	elements.forEach(element => {
+		(<HTMLElement>element).style.fontSize = newFontSize + "px";
+	});
 }

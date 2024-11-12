@@ -9,11 +9,11 @@ a:hover  {color: #a19100; overflow: hidden; white-space: nowrap; text-overflow: 
 
 /* Button Looks */
 #calculator:focus {outline: none;}
-#display {color: #ffffff; background-color: #383838; text-align: right;}
-#status {color: #fffb0083; background: url('../images/settingscog.png') 0px 0px / cover; background-color: #F0000055; text-align: center; vertical-align: center; padding: 3px; width: 20px; height: 20px; box-shadow: inset 2px 2px 2px #464646cc; border-radius: 2px;}
-#status:hover {background-position: 0px -26px;}
-.buttons {background-color: #383838; margin: 0px; width: 26px; height: 26px;}
-.functions {color: #fffb00; margin-right: 10px; font-size: 14px; }
+#display {color: #ffffff; background-color: #383838; text-align: right; font-size: 12px;}
+#status {color: #fffb0083; background: url('../images/settingscog.png') 0px 0px / cover; background-color: #F0000055; text-align: center; vertical-align: center; margin: auto; padding: 3px; aspect-ratio: 1; box-shadow: inset 2px 2px 2px #464646cc; border-radius: 2px;}
+#status:hover {background-position: 0px -100%;}
+.buttons {background-color: #383838; margin: 0px; width: 100%; height: 100%;}
+.functions {color: #fffb00; font-size: 14px; }
 .operators {color: #ff0000; font-size: 16px;}
 .numbers {color: #0000ff; font-size: 20px;}
 
@@ -21,8 +21,8 @@ a:hover  {color: #a19100; overflow: hidden; white-space: nowrap; text-overflow: 
 .context-menu li:hover {background-color: #fffb0083;}
 
 /* Table Setup */
-table {margin: auto; border-collapse: collapse;}
+table {margin: auto; border-collapse: collapse; width: 100%; height: 100%;}
 td {padding: 2px;}
-td[colspan="2"] * {width: calc(2 * 26px + 2 * 3px);}
-td[colspan="6"] * {width: calc(6 * 26px + 6 * 3px + 10px);}
-td[rowspan="2"] * {height: calc(2 * 26px + 2 * 3px);}
+td[colspan="2"] * {width: 100%; height: 100%;}
+td[colspan="6"] * {width: calc(100% - 10px); height: 100%;}
+td[rowspan="2"] * {height: 100%; height: 100%;}
