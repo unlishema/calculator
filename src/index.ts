@@ -62,8 +62,8 @@ async function initializeApp() {
 		if (localStorage.getItem("numbers-alpha") == null) localStorage.setItem("numbers-alpha", "0.85");
 		if (localStorage.getItem("output-color") == null) localStorage.setItem("output-color", "#ffffff");
 		if (localStorage.getItem("output-alpha") == null) localStorage.setItem("output-alpha", "0.75");
-		if (localStorage.getItem("buttons-color") == null) localStorage.setItem("buttons-color", "#383838");
-		if (localStorage.getItem("buttons-alpha") == null) localStorage.setItem("buttons-alpha", "0.55");
+		if (localStorage.getItem("buttons-color") == null) localStorage.setItem("buttons-color", "#252525");
+		if (localStorage.getItem("buttons-alpha") == null) localStorage.setItem("buttons-alpha", "0.35");
 
 		// Setup the colors
 		applyStoredColor("functions-color", "functions-alpha", ".functions");
