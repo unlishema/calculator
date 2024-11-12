@@ -10,9 +10,9 @@ a:hover  {color: #a19100; overflow: hidden; white-space: nowrap; text-overflow: 
 /* Button Looks */
 #calculator:focus {outline: none;}
 #display {color: #ffffff; background-color: #383838; text-align: right;}
-#status {color: #fffb0083; background: url('../images/settingscog.png') 0px 0px / cover; background-color: #383838; text-align: center; vertical-align: center; padding: 3px; width: 20px; height: 20px; box-shadow: inset 2px 2px 2px #464646cc; border-radius: 2px;}
+#status {color: #fffb0083; background: url('../images/settingscog.png') 0px 0px / cover; background-color: #F0000055; text-align: center; vertical-align: center; padding: 3px; width: 20px; height: 20px; box-shadow: inset 2px 2px 2px #464646cc; border-radius: 2px;}
 #status:hover {background-position: 0px -26px;}
-.buttons {background-color: #272727e5; margin: 0px; width: 26px; height: 26px;}
+.buttons {background-color: #383838; margin: 0px; width: 26px; height: 26px;}
 .functions {color: #fffb00; margin-right: 10px; font-size: 14px; }
 .operators {color: #ff0000; font-size: 16px;}
 .numbers {color: #0000ff; font-size: 20px;}

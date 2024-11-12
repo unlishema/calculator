@@ -74,10 +74,6 @@ async function initializeApp() {
 		calculator.setupKeyboardSupport();
 		calculator.setupClipboardSupport();
 		calculator.setupRightClickMenu();
-
-		// TODO Add in keyboard support
-
-		// TODO Override Right click to add a copy and paste option
 	} catch (error) {
 		console.error("Initialization error:", error);
 	}
