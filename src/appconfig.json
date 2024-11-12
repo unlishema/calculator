@@ -1,0 +1,15 @@
+{
+	"appName": "Calculator",
+	"description": "A simple calculator designed to work with Alt1 Toolkit",
+	"appUrl": "./index.html",
+	"configUrl": "./appconfig.json",
+	"iconUrl": "./images/icon.png",
+	"defaultWidth": 206,
+	"defaultHeight": 195,
+	"minWidth": 206,
+	"minHeight": 195,
+	"maxWidth": 206,
+	"maxHeight": 195,
+	"requestHandlers": [],
+	"activators": []
+}

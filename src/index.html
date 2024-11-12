@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Alt1 Calc</title>
+	<link rel="icon" href="./images/icon.png" type="image/png">
+	<link rel="stylesheet" href="./index.css">
+</head>
+
+<body id="nis" class="nis">
+	<div id="menubutton" class="transbutton" title="Settings"></div>
+	<div id="addtoalt1" class="nistext">
+		You should install Alt1 Toolkit
+		<a onclick="window.open(`https://runeapps.org/alt1`);">Download Here</a> or
+		<a onclick="window.open(`alt1://addapp/https://calc.unlishema.org/appconfig.json`);">Add App to Alt1</a>
+	</div>
+	<table id="calculator" tabindex="0">
+		<tr>
+			<td colspan="6">
+				<input type="text" id="display" value="0"
+					title="Follows PEMDOS while allowing K,M,B, and T for more standard RS feel" disabled>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="status" title="Green if keyboard input is allowed, otherwise Red"></div>
+			</td>
+			<td colspan="2">
+				<button class="button operators" id="backspaceBtn" title="Backspace">&#x25c0;&#x2014;</button>
+			</td>
+			<td colspan="2">
+				<button class="button operators" id="clearLastBtn" title="Clear Entry (Delete Key)">CE</button>
+			</td>
+			<td>
+				<button class="button operators" id="clearAllBtn" title="Clear All (Esacpe Key)">C</button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button class="button function" id="functionT" title="Trillions">T</button>
+			</td>
+			<td>
+				<button class="button numbers" id="number7">7</button>
+			</td>
+			<td>
+				<button class="button numbers" id="number8">8</button>
+			</td>
+			<td>
+				<button class="button numbers" id="number9">9</button>
+			</td>
+			<td>
+				<button class="button operators" id="openParenBtn">(</button>
+			</td>
+			<td>
+				<button class="button operators" id="closeParenBtn">)</button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button class="button function" id="functionB" title="Billions">B</button>
+			</td>
+			<td>
+				<button class="button numbers" id="number4">4</button>
+			</td>
+			<td>
+				<button class="button numbers" id="number5">5</button>
+			</td>
+			<td>
+				<button class="button numbers" id="number6">6</button>
+			</td>
+			<td>
+				<button class="button operators" id="multiplyBtn">*</button>
+			</td>
+			<td>
+				<button class="button operators" id="divideBtn">/</button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button class="button function" id="functionM" title="Millions">M</button>
+			</td>
+			<td>
+				<button class="button numbers" id="number1">1</button>
+			</td>
+			<td>
+				<button class="button numbers" id="number2">2</button>
+			</td>
+			<td>
+				<button class="button numbers" id="number3">3</button>
+			</td>
+			<td>
+				<button class="button operators" id="subtractBtn">-</button>
+			</td>
+			<td rowspan="2">
+				<button class="button operators" id="equalsBtn">=</button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button class="button function" id="functionK" title="Thousands">K</button>
+			</td>
+			<td colspan="2">
+				<button class="button numbers" id="number0">0</button>
+			</td>
+			<td>
+				<button class="button numbers" id="decimalBtn">.</button>
+			</td>
+			<td>
+				<button class="button operators" id="addBtn">+</button>
+			</td>
+		</tr>
+	</table>
+</body>
+<script src="./main.js"></script>
+
+</html>
