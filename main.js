@@ -557,9 +557,9 @@ function initializeApp() {
                 if (localStorage.getItem("output-alpha") == null)
                     localStorage.setItem("output-alpha", "0.75");
                 if (localStorage.getItem("buttons-color") == null)
-                    localStorage.setItem("buttons-color", "#383838");
+                    localStorage.setItem("buttons-color", "#252525");
                 if (localStorage.getItem("buttons-alpha") == null)
-                    localStorage.setItem("buttons-alpha", "0.55");
+                    localStorage.setItem("buttons-alpha", "0.35");
                 // Setup the colors
                 applyStoredColor("functions-color", "functions-alpha", ".functions");
                 applyStoredColor("operators-color", "operators-alpha", ".operators");
