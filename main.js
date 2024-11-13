@@ -87,9 +87,11 @@ function appendFunction(letter) {
     awaitingInput = false;
 }
 function setOperation(operation) {
+    // Get the locale-specific decimal separator
+    var decimalSeparator = getDecimalSeparator();
     var operatorRegex = /[+\-*/]/;
     var trimmedValue = display.value.trim();
-    if (awaitingInput && operation === ".")
+    if (awaitingInput && operation === decimalSeparator)
         display.value = "0"; // Reset on decimal
     awaitingInput = false;
     if (operatorRegex.test(trimmedValue.charAt(trimmedValue.length - 1))) {
