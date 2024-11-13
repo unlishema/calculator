@@ -70,6 +70,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 };
 // Initialize the display element
 var display = document.getElementById("display");
+var MAX_VALUE = 9.999999999999998e+27;
 var buttonGroups = {
     controlButtons: ["backspaceBtn", "clearLastBtn", "clearAllBtn", "equalsBtn"],
     functionButtons: ["functionT", "functionB", "functionM", "functionK"],
@@ -112,23 +113,49 @@ function clearAll() {
 }
 function calculate() {
     try {
-        // Remove commas from the input
-        display.value = display.value.replace(/,/g, "");
+        // Get the locale-specific decimal separator
+        var decimalSeparator = getDecimalSeparator();
+        var thousandsSeparator = getThousandsSeparator();
+        console.log("Value: ".concat(display.value));
+        // Remove thousands separators (if using commas or periods as thousands separator)
+        display.value = display.value.replace(new RegExp("\\".concat(thousandsSeparator), 'g'), ''); // Remove thousands separator
+        console.log("".concat(thousandsSeparator, " Value: ").concat(display.value)); // Check the value after the replacement
+        // Replace decimal separator with a dot for eval (for consistency with JS parsing)
+        display.value = display.value.replace(new RegExp("\\".concat(decimalSeparator), 'g'), '.'); // Replace the locale decimal with a dot for eval
+        console.log("".concat(decimalSeparator, " Value: ").concat(display.value)); // Check the value after the replacement
         // Replace K, M, B, T with their corresponding numbers
         display.value = display.value.replace(/(\d+(\.\d+)?)([KMBT])/gi, function (match, num, decimal, suffix) {
             var multipliers = { K: 1000, M: 1000000, B: 1000000000, T: 1000000000000 };
             return (parseFloat(num) * multipliers[suffix.toUpperCase()]).toString();
         });
-        if (display.value.includes("(")) {
-            display.value = display.value.replace(/(\d|\))\s*\(/g, "$1*("); // Handle implicit multiplication
-        }
+        console.log("Function Value: ".concat(display.value));
+        // Handle implicit multiplication if parentheses are present
+        display.value = display.value.replace(/(\d|\))\s*\(/g, "$1*("); // Multiplication implied by parentheses
+        console.log("Multi Value: ".concat(display.value));
+        // Handle cases where the input might have invalid operations like leading zeros
+        display.value = display.value.replace(/(\+|\-|\*|\/)(\d+)/g, '$1$2'); // Ensures valid operator spacing
+        console.log("Lead 0 Value: ".concat(display.value));
+        // Evaluate the expression after replacements
         var result = eval(display.value).toString();
+        console.log("Result: ".concat(result));
+        // Check if the result exceeds the max value
+        if (parseFloat(result) > MAX_VALUE) {
+            result = MAX_VALUE.toString();
+            console.log("New Max: ".concat(result));
+            var successMessage = document.getElementById('successMessage');
+            showSuccessMessage(successMessage, "Max value exceeded!");
+            console.log("Max value exceeded, setting to: ".concat(MAX_VALUE));
+        }
+        // Format the result if it's a valid number
         var numberResult = parseFloat(result);
         result = !isNaN(numberResult) ? formatLargeNumber(numberResult) : result;
+        console.log("Number Result: ".concat(result));
+        // Set the display value to the result
         display.value = result;
+        console.log("Final Value: ".concat(display.value));
     }
     catch (error) {
-        display.value = "Error";
+        display.value = "Error"; // In case of an error, show error
     }
     awaitingInput = true; // Await new input after "="
 }
@@ -137,16 +164,49 @@ function formatLargeNumber(number) {
     var thresholds = [1e3, 1e6, 1e9, 1e12];
     for (var i = thresholds.length - 1; i >= 0; i--) {
         if (number >= thresholds[i]) {
-            var testResult = (number / thresholds[i]).toLocaleString();
+            var testResult = "".concat((number / thresholds[i]));
             return !testResult.includes(".") || (testResult.includes(".") && (testResult.length - 1 - testResult.indexOf(".")) <= 2)
-                ? testResult + suffixes[i]
+                ? parseFloat(testResult).toLocaleString() + suffixes[i]
                 : number.toLocaleString();
         }
     }
     return number.toLocaleString();
 }
+// Function to get the current locale's decimal separator
+function getDecimalSeparator() {
+    var testNumber = 1.1;
+    return testNumber.toLocaleString().charAt(1); // Extracts the decimal separator
+}
+// Function to get the current locale's thousands separator
+function getThousandsSeparator() {
+    // Create a number formatted with commas or periods based on the locale
+    var number = 1000;
+    var formattedNumber = number.toLocaleString();
+    // Check if the formatted number contains a comma or period
+    // If the number contains a comma or period, we assume that's the thousands separator
+    if (formattedNumber.includes(',')) {
+        return ',';
+    }
+    else if (formattedNumber.includes('.')) {
+        return '.';
+    }
+    else if (formattedNumber.includes(' ')) {
+        return ' ';
+    }
+    else {
+        return ''; // Return empty if no specific separator is found (edge cases)
+    }
+}
+// Function to update the decimal button based on locale
+function updateDecimalButton() {
+    var decimalButton = document.getElementById("decimalBtn");
+    var decimalSeparator = getDecimalSeparator();
+    decimalButton.textContent = decimalSeparator; // Set the text of the button to the correct separator
+}
 // Set up button listeners for various actions
 function setupButtonListeners() {
+    // Update the decimal button based on locale before adding event listeners
+    updateDecimalButton();
     var buttonActions = {
         backspaceBtn: backspace,
         clearLastBtn: clearLast,
@@ -165,12 +225,14 @@ function setupButtonListeners() {
         var _a;
         (_a = document.getElementById(id)) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () { return appendNumber(id.charAt(id.length - 1)); });
     });
+    // Update the operatorMap to use the locale-specific decimal separator
+    var decimalSeparator = getDecimalSeparator();
+    var operatorMap = {
+        openParenBtn: "(", closeParenBtn: ")", multiplyBtn: "*", divideBtn: "/",
+        subtractBtn: "-", addBtn: "+", decimalBtn: decimalSeparator // Use the locale-specific separator
+    };
     buttonGroups.operatorButtons.forEach(function (id) {
         var _a;
-        var operatorMap = {
-            openParenBtn: "(", closeParenBtn: ")", multiplyBtn: "*", divideBtn: "/",
-            subtractBtn: "-", addBtn: "+", decimalBtn: "."
-        };
         (_a = document.getElementById(id)) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function () { return setOperation(operatorMap[id]); });
     });
 }
@@ -208,51 +270,35 @@ function setupKeyboardSupport() {
 function setupRightClickMenu() {
     var _this = this;
     var displayElement = document.getElementById("calculator");
-    // Create custom context menu
-    var contextMenu = document.createElement('ul');
-    contextMenu.className = 'context-menu nis';
-    contextMenu.style.position = 'absolute';
-    contextMenu.style.display = 'none';
-    contextMenu.style.backgroundColor = '#fff';
-    contextMenu.style.border = '1px solid #ccc';
-    contextMenu.style.padding = '0px';
-    contextMenu.style.listStyle = 'none';
-    contextMenu.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
-    document.body.appendChild(contextMenu);
-    // Add "Copy" and "Paste" options
-    var copyOption = document.createElement('li');
-    copyOption.className = 'nistext';
-    copyOption.textContent = 'Copy (Ctrl+C)';
-    copyOption.style.padding = '0px 15px';
-    copyOption.style.cursor = 'pointer';
+    var contextMenu = document.getElementById("contextMenu");
+    var copyOption = document.getElementById("copyOption");
+    var pasteOption = document.getElementById("pasteOption");
     copyOption.addEventListener('click', function () { return __awaiter(_this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0: return [4 /*yield*/, simulateCopy()];
                 case 1:
-                    _a.sent();
+                    _b.sent();
                     closeContextMenu();
-                    document.getElementById("calculator").focus();
+                    (_a = document.getElementById("calculator")) === null || _a === void 0 ? void 0 : _a.focus();
                     return [2 /*return*/];
             }
         });
     }); });
-    contextMenu.appendChild(copyOption);
-    var pasteOption = document.createElement('li');
-    pasteOption.className = 'nistext';
-    pasteOption.textContent = 'Paste (Ctrl+V)';
-    pasteOption.title = 'Use Ctrl+V instead as this won\'t work';
-    pasteOption.style.padding = '0px 15px';
-    pasteOption.style.cursor = 'pointer';
     pasteOption.addEventListener('click', function () { return __awaiter(_this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            //await simulatePaste();
-            closeContextMenu();
-            document.getElementById("calculator").focus();
-            return [2 /*return*/];
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, simulatePaste()];
+                case 1:
+                    _b.sent();
+                    closeContextMenu();
+                    (_a = document.getElementById("calculator")) === null || _a === void 0 ? void 0 : _a.focus();
+                    return [2 /*return*/];
+            }
         });
     }); });
-    contextMenu.appendChild(pasteOption);
     // Show custom context menu on right-click
     displayElement.addEventListener('contextmenu', function (event) {
         event.preventDefault();
@@ -274,25 +320,21 @@ function setupRightClickMenu() {
 // Setup for copy and paste support
 function setupClipboardSupport() {
     var _this = this;
-    setupRightClickMenu(); // Set up right-click menu
     var calculatorElement = document.getElementById("calculator");
     if (calculatorElement) {
         calculatorElement.addEventListener("keydown", function (event) { return __awaiter(_this, void 0, void 0, function () {
-            var key;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!calculatorElement.contains(document.activeElement))
                             return [2 /*return*/];
-                        key = event.key;
-                        if (!event.ctrlKey) return [3 /*break*/, 4];
-                        if (!(key === 'c')) return [3 /*break*/, 2];
+                        if (!(event.ctrlKey && event.key === "c")) return [3 /*break*/, 2];
                         return [4 /*yield*/, simulateCopy()];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 2:
-                        if (!(key === 'v')) return [3 /*break*/, 4];
+                        if (!(event.ctrlKey && event.key === "v")) return [3 /*break*/, 4];
                         return [4 /*yield*/, simulatePaste()];
                     case 3:
                         _a.sent();
@@ -303,59 +345,78 @@ function setupClipboardSupport() {
         }); });
     }
 }
+// Simulation of copy operation with fallback
 function simulateCopy() {
     return __awaiter(this, void 0, void 0, function () {
-        var displayValue, error_1, textarea;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var successMessage, displayValue, _a, _b, error_1, textarea;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
+                    successMessage = document.getElementById('successMessage');
                     displayValue = display.value;
-                    if (!navigator.clipboard) return [3 /*break*/, 5];
-                    _a.label = 1;
+                    if (!navigator.clipboard) return [3 /*break*/, 6];
+                    _c.label = 1;
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
+                    _c.trys.push([1, 4, , 5]);
                     return [4 /*yield*/, navigator.clipboard.writeText(displayValue)];
                 case 2:
-                    _a.sent();
-                    return [3 /*break*/, 4];
+                    _c.sent();
+                    console.log("Successfully copied to clipboard");
+                    _a = showSuccessMessage;
+                    _b = [successMessage];
+                    return [4 /*yield*/, navigator.clipboard.readText()];
                 case 3:
-                    error_1 = _a.sent();
+                    _a.apply(void 0, _b.concat([(_c.sent()) === displayValue ? "Copied!" : "Copy Failed!"]));
+                    return [3 /*break*/, 5];
+                case 4:
+                    error_1 = _c.sent();
                     console.error('Failed to copy to clipboard:', error_1);
-                    return [3 /*break*/, 4];
-                case 4: return [3 /*break*/, 6];
-                case 5:
+                    return [3 /*break*/, 5];
+                case 5: return [3 /*break*/, 7];
+                case 6:
                     textarea = document.createElement('textarea');
                     textarea.style.opacity = '0';
                     document.body.appendChild(textarea);
                     textarea.value = displayValue;
                     textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    document.getElementById("calculator").focus();
-                    _a.label = 6;
-                case 6: return [2 /*return*/];
+                    try {
+                        document.execCommand('copy');
+                        showSuccessMessage(successMessage, textarea.value !== "" ? "Copied!" : "Copy Failed!");
+                        document.body.removeChild(textarea);
+                        document.getElementById("calculator").focus();
+                        console.log("Fallback: Successfully copied to clipboard");
+                    }
+                    catch (error) {
+                        console.error("Fallback: Failed to copy text", error);
+                    }
+                    _c.label = 7;
+                case 7: return [2 /*return*/];
             }
         });
     });
 }
+// Simulation of paste operation with fallback
 function simulatePaste() {
     return __awaiter(this, void 0, void 0, function () {
-        var clipboardText, error_2, clipboardText_1;
+        var successMessage, text, success, error_2, clipboardText_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    successMessage = document.getElementById('successMessage');
                     if (!navigator.clipboard) return [3 /*break*/, 5];
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, navigator.clipboard.readText()];
                 case 2:
-                    clipboardText = _a.sent();
-                    appendClipboardData(clipboardText);
+                    text = _a.sent();
+                    success = appendClipboardData(text);
+                    showSuccessMessage(successMessage, success ? "Pasted!" : "Paste Failed!");
+                    console.log("Successfully pasted from clipboard");
                     return [3 /*break*/, 4];
                 case 3:
                     error_2 = _a.sent();
-                    console.error('Failed to read clipboard content:', error_2);
+                    console.error("Failed to paste text", error_2);
                     return [3 /*break*/, 4];
                 case 4: return [3 /*break*/, 6];
                 case 5:
@@ -367,8 +428,10 @@ function simulatePaste() {
                     setTimeout(function () {
                         var pastedData = clipboardText_1.value;
                         document.body.removeChild(clipboardText_1);
-                        appendClipboardData(pastedData);
+                        var success = appendClipboardData(pastedData);
                         document.getElementById("calculator").focus();
+                        showSuccessMessage(successMessage, success ? "Pasted!" : "Paste Failed!");
+                        console.log("Fallback: Successfully pasted from clipboard");
                     }, 10);
                     _a.label = 6;
                 case 6: return [2 /*return*/];
@@ -376,11 +439,31 @@ function simulatePaste() {
         });
     });
 }
+// Show success message on copy or paste
+function showSuccessMessage(successMessage, text) {
+    successMessage.innerHTML = text;
+    successMessage.style.display = 'block';
+    setTimeout(function () { successMessage.style.opacity = '1'; }, 10);
+    setTimeout(function () {
+        successMessage.style.opacity = '0';
+        setTimeout(function () { successMessage.style.display = 'none'; }, 300);
+    }, 2000);
+}
+// Add paste data as needed
 function appendClipboardData(clipboardText) {
+    if (clipboardText === "")
+        return false;
+    // Regex to allow numbers, operators, commas, dots, and specific letters
+    var allowedPattern = /^[0-9+\-*/.,()KMBT\s]*$/;
+    if (!allowedPattern.test(clipboardText)) {
+        console.log("Invalid clipboard text");
+        return false;
+    }
+    // If awaiting input (after pressing "="), clear display and insert clipboard data
     if (awaitingInput) {
-        // If awaiting input (after pressing "="), clear display and insert clipboard data
         display.value = clipboardText;
         awaitingInput = false;
+        return true;
     }
     else {
         // Append clipboard data to the current display value
@@ -388,6 +471,7 @@ function appendClipboardData(clipboardText) {
             display.value = clipboardText;
         else
             display.value += clipboardText;
+        return true;
     }
 }
 
@@ -602,7 +686,7 @@ function applyStoredColor(colorKey, alphaKey, selector, bgColor) {
 }
 function adjustFontSizeOnResize() {
     var newFontSize = Math.max(window.innerWidth / 12, 14); // Adjust the factor (50) to control scaling
-    var elements = document.querySelectorAll(".functions, .operators, .numbers, #display, .buttons");
+    var elements = document.querySelectorAll(".functions, .operators, .numbers, #display, .buttons, .success-message");
     elements.forEach(function (element) {
         element.style.fontSize = newFontSize + "px";
     });

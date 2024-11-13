@@ -1,5 +1,5 @@
 /* Global App settings */
-.nis     {margin: 8px 2px 2px 2px; background: url("../../images/background.png");}
+.nis     {margin: 8px 2px 2px 2px; background: url("../images/background.png");}
 .nistext {color: #E5E6EB;}
 a        {color: #ffffff; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-decoration: underline; cursor: pointer;}
 a:hover  {color: #a19100; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-decoration: underline; cursor: pointer;}
@@ -18,7 +18,10 @@ a:hover  {color: #a19100; overflow: hidden; white-space: nowrap; text-overflow: 
 .numbers {color: #0000ff; font-size: 20px;}
 
 /* Context Menu */
+.context-menu { position: absolute; display: none; border: 1px solid #ccc; padding: 0; list-style: none; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+.context-menu .nistext { padding: 0 15px; cursor: pointer; }
 .context-menu li:hover {background-color: #fffb0083;}
+.success-message { position: absolute; display: block; padding: 5px; margin: 3px 0 0 5px; border: 2px #66ff0041 solid; border-radius: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: opacity 0.3s ease; white-space: nowrap; }
 
 /* Table Setup */
 table {margin: auto; border-collapse: collapse; width: 100%; height: 100%;}
