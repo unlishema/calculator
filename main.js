@@ -282,7 +282,7 @@ function setupRightClickMenu() {
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, simulateCopy()];
+                case 0: return [4 /*yield*/, copy()];
                 case 1:
                     _b.sent();
                     closeContextMenu();
@@ -295,7 +295,7 @@ function setupRightClickMenu() {
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, simulatePaste()];
+                case 0: return [4 /*yield*/, paste()];
                 case 1:
                     _b.sent();
                     closeContextMenu();
@@ -334,13 +334,13 @@ function setupClipboardSupport() {
                         if (!calculatorElement.contains(document.activeElement))
                             return [2 /*return*/];
                         if (!(event.ctrlKey && event.key === "c")) return [3 /*break*/, 2];
-                        return [4 /*yield*/, simulateCopy()];
+                        return [4 /*yield*/, copy()];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 2:
                         if (!(event.ctrlKey && event.key === "v")) return [3 /*break*/, 4];
-                        return [4 /*yield*/, simulatePaste()];
+                        return [4 /*yield*/, paste()];
                     case 3:
                         _a.sent();
                         _a.label = 4;
@@ -351,9 +351,9 @@ function setupClipboardSupport() {
     }
 }
 // Simulation of copy operation with fallback
-function simulateCopy() {
+function copy() {
     return __awaiter(this, void 0, void 0, function () {
-        var successMessage, displayValue, error_1, textarea;
+        var successMessage, displayValue, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -374,40 +374,52 @@ function simulateCopy() {
                 case 3:
                     error_1 = _a.sent();
                     console.error('Failed to copy to clipboard:', error_1);
+                    fallbackCopy();
                     return [3 /*break*/, 4];
                 case 4: return [3 /*break*/, 6];
                 case 5:
-                    textarea = document.createElement('textarea');
-                    textarea.style.opacity = '0';
-                    document.body.appendChild(textarea);
-                    textarea.value = displayValue;
-                    textarea.select();
-                    try {
-                        document.execCommand('copy');
-                        showSuccessMessage(successMessage, textarea.value !== "" ? "Copied!" : "Copy Failed!");
-                        if (textarea.value !== "")
-                            console.log("Fallback: Successfully copied to clipboard");
-                        document.body.removeChild(textarea);
-                        document.getElementById("calculator").focus();
-                    }
-                    catch (error) {
-                        console.error("Fallback: Failed to copy text", error);
-                    }
+                    fallbackCopy();
                     _a.label = 6;
                 case 6: return [2 /*return*/];
             }
         });
     });
 }
-// Simulation of paste operation with fallback
-function simulatePaste() {
+// Simulation of copy operation with fallback
+function fallbackCopy() {
     return __awaiter(this, void 0, void 0, function () {
-        var successMessage, text, success, error_2, clipboardText_1;
+        var successMessage, textarea;
+        return __generator(this, function (_a) {
+            successMessage = document.getElementById('successMessage');
+            textarea = document.createElement('textarea');
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.value = display.value;
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showSuccessMessage(successMessage, textarea.value !== "" ? "Copied!" : "Copy Failed!");
+                if (textarea.value !== "")
+                    console.log("Fallback: Successfully copied to clipboard");
+                document.body.removeChild(textarea);
+                document.getElementById("calculator").focus();
+            }
+            catch (error) {
+                console.error("Fallback: Failed to copy text", error);
+            }
+            return [2 /*return*/];
+        });
+    });
+}
+// Simulation of paste operation with fallback
+function paste() {
+    return __awaiter(this, void 0, void 0, function () {
+        var successMessage, text, success, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     successMessage = document.getElementById('successMessage');
-                    if (true) return [3 /*break*/, 5];
+                    if (!navigator.clipboard) return [3 /*break*/, 5];
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
@@ -422,26 +434,38 @@ function simulatePaste() {
                 case 3:
                     error_2 = _a.sent();
                     console.error("Failed to paste text", error_2);
+                    fallbackPaste();
                     return [3 /*break*/, 4];
                 case 4: return [3 /*break*/, 6];
                 case 5:
-                    clipboardText_1 = document.createElement('textarea');
-                    clipboardText_1.style.opacity = '0';
-                    document.body.appendChild(clipboardText_1);
-                    clipboardText_1.focus();
-                    document.execCommand('paste');
-                    setTimeout(function () {
-                        var pastedData = clipboardText_1.value;
-                        document.body.removeChild(clipboardText_1);
-                        var success = appendClipboardData(pastedData);
-                        document.getElementById("calculator").focus();
-                        showSuccessMessage(successMessage, success ? "Pasted!" : "Paste Failed!");
-                        if (success)
-                            console.log("Fallback: Successfully pasted from clipboard");
-                    }, 10);
+                    fallbackPaste();
                     _a.label = 6;
                 case 6: return [2 /*return*/];
             }
+        });
+    });
+}
+// Simulation of paste operation with fallback
+function fallbackPaste() {
+    return __awaiter(this, void 0, void 0, function () {
+        var successMessage, clipboardText;
+        return __generator(this, function (_a) {
+            successMessage = document.getElementById('successMessage');
+            clipboardText = document.createElement('textarea');
+            clipboardText.style.opacity = '0';
+            document.body.appendChild(clipboardText);
+            clipboardText.focus();
+            document.execCommand('paste');
+            setTimeout(function () {
+                var pastedData = clipboardText.value;
+                document.body.removeChild(clipboardText);
+                var success = appendClipboardData(pastedData);
+                document.getElementById("calculator").focus();
+                showSuccessMessage(successMessage, success ? "Pasted!" : "Paste Failed!");
+                if (success)
+                    console.log("Fallback: Successfully pasted from clipboard");
+            }, 10);
+            return [2 /*return*/];
         });
     });
 }
