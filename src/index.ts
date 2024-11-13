@@ -106,7 +106,7 @@ function applyStoredColor(colorKey, alphaKey, selector, bgColor = false) {
 
 function adjustFontSizeOnResize() {
 	const newFontSize = Math.max(window.innerWidth / 12, 14); // Adjust the factor (50) to control scaling
-	const elements = document.querySelectorAll(".functions, .operators, .numbers, #display, .buttons");
+	const elements = document.querySelectorAll(".functions, .operators, .numbers, #display, .buttons, .success-message");
 
 	elements.forEach(element => {
 		(<HTMLElement>element).style.fontSize = newFontSize + "px";
