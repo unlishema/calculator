@@ -96,7 +96,7 @@ function setOperation(operation) {
         display.value = trimmedValue.slice(0, -1) + operation + " ";
     }
     else if (trimmedValue.length > 0) {
-        display.value += "".concat(operation !== "." ? " " : "").concat(operation).concat(operation !== "." ? " " : "");
+        display.value += "".concat(operation);
     }
 }
 function backspace() {
