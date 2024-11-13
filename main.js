@@ -366,10 +366,10 @@ function simulateCopy() {
                     return [4 /*yield*/, navigator.clipboard.writeText(displayValue)];
                 case 2:
                     _a.sent();
-                    console.log("Successfully copied to clipboard");
                     // Temp bypass till paste is fixed
                     //showSuccessMessage(successMessage, await navigator.clipboard.readText() === displayValue ? "Copied!" : "Copy Failed!");
                     showSuccessMessage(successMessage, "Copied!");
+                    console.log("Successfully copied to clipboard");
                     return [3 /*break*/, 4];
                 case 3:
                     error_1 = _a.sent();
@@ -385,9 +385,10 @@ function simulateCopy() {
                     try {
                         document.execCommand('copy');
                         showSuccessMessage(successMessage, textarea.value !== "" ? "Copied!" : "Copy Failed!");
+                        if (textarea.value !== "")
+                            console.log("Fallback: Successfully copied to clipboard");
                         document.body.removeChild(textarea);
                         document.getElementById("calculator").focus();
-                        console.log("Fallback: Successfully copied to clipboard");
                     }
                     catch (error) {
                         console.error("Fallback: Failed to copy text", error);
@@ -415,7 +416,8 @@ function simulatePaste() {
                     text = _a.sent();
                     success = appendClipboardData(text);
                     showSuccessMessage(successMessage, success ? "Pasted!" : "Paste Failed!");
-                    console.log("Successfully pasted from clipboard");
+                    if (success)
+                        console.log("Successfully pasted from clipboard");
                     return [3 /*break*/, 4];
                 case 3:
                     error_2 = _a.sent();
@@ -434,7 +436,8 @@ function simulatePaste() {
                         var success = appendClipboardData(pastedData);
                         document.getElementById("calculator").focus();
                         showSuccessMessage(successMessage, success ? "Pasted!" : "Paste Failed!");
-                        console.log("Fallback: Successfully pasted from clipboard");
+                        if (success)
+                            console.log("Fallback: Successfully pasted from clipboard");
                     }, 10);
                     _a.label = 6;
                 case 6: return [2 /*return*/];
