@@ -229,6 +229,8 @@ function setupButtonListeners() {
 // Add Keyboard support for controlling calculator
 function setupKeyboardSupport() {
     var calculatorElement = document.getElementById("calculator");
+    var decimalSeparator = getDecimalSeparator();
+    var thousandsSeparator = getThousandsSeparator();
     if (calculatorElement) {
         calculatorElement.addEventListener("focusin", function () { return document.getElementById("status").style.backgroundColor = "#00F00055"; });
         calculatorElement.addEventListener("focusout", function () { return document.getElementById("status").style.backgroundColor = "#F0000055"; });
@@ -237,20 +239,31 @@ function setupKeyboardSupport() {
             if (!calculatorElement.contains(document.activeElement))
                 return;
             var key = event.key;
+            // Handle numeric keys
             if (key >= '0' && key <= '9')
                 appendNumber(key);
-            else if (key === '.')
-                setOperation('.');
+            // Handle decimal separator (dynamic based on locale)
+            else if (key === decimalSeparator)
+                setOperation(decimalSeparator);
+            // Handle thousands separator if needed (optional, can be used for formatting)
+            else if (key === thousandsSeparator)
+                setOperation(thousandsSeparator);
+            // Handle mathematical operations
             else if (key === '+' || key === '-' || key === '*' || key === '/')
                 setOperation(key);
+            // Handle function keys (K, M, B, T)
             else if ('KMBT'.includes(key.toUpperCase()))
                 appendFunction(key.toUpperCase());
+            // Handle 'Enter' for calculation
             else if (key === 'Enter')
                 calculate();
+            // Handle 'Backspace' for deletion
             else if (key === 'Backspace')
                 backspace();
+            // Handle 'Delete' to clear last input
             else if (key === 'Delete')
                 clearLast();
+            // Handle 'Escape' to clear everything
             else if (key === 'Escape')
                 clearAll();
         });
