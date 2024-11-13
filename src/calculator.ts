@@ -56,39 +56,31 @@ export function calculate() {
         // Get the locale-specific decimal separator
         const decimalSeparator = getDecimalSeparator();
         const thousandsSeparator = getThousandsSeparator();
-        console.log(`Value: ${display.value}`);
 
         // Remove thousands separators (if using commas or periods as thousands separator)
         display.value = display.value.replace(new RegExp(`\\${thousandsSeparator}`, 'g'), ''); // Remove thousands separator
-        console.log(`${thousandsSeparator} Value: ${display.value}`); // Check the value after the replacement
 
         // Replace decimal separator with a dot for eval (for consistency with JS parsing)
         display.value = display.value.replace(new RegExp(`\\${decimalSeparator}`, 'g'), '.'); // Replace the locale decimal with a dot for eval
-        console.log(`${decimalSeparator} Value: ${display.value}`); // Check the value after the replacement
 
         // Replace K, M, B, T with their corresponding numbers
         display.value = display.value.replace(/(\d+(\.\d+)?)([KMBT])/gi, (match, num, decimal, suffix) => {
             const multipliers = { K: 1000, M: 1000000, B: 1000000000, T: 1000000000000 };
             return (parseFloat(num) * multipliers[suffix.toUpperCase()]).toString();
         });
-        console.log(`Function Value: ${display.value}`);
 
         // Handle implicit multiplication if parentheses are present
         display.value = display.value.replace(/(\d|\))\s*\(/g, "$1*("); // Multiplication implied by parentheses
-        console.log(`Multi Value: ${display.value}`);
 
         // Handle cases where the input might have invalid operations like leading zeros
         display.value = display.value.replace(/(\+|\-|\*|\/)(\d+)/g, '$1$2'); // Ensures valid operator spacing
-        console.log(`Lead 0 Value: ${display.value}`);
 
         // Evaluate the expression after replacements
         let result = eval(display.value).toString();
-        console.log(`Result: ${result}`);
 
         // Check if the result exceeds the max value
         if (parseFloat(result) > MAX_VALUE) {
             result = MAX_VALUE.toString();
-            console.log(`New Max: ${result}`);
             const successMessage = document.getElementById('successMessage') as HTMLDivElement;
             showSuccessMessage(successMessage, "Max value exceeded!");
             console.log(`Max value exceeded, setting to: ${MAX_VALUE}`);
@@ -97,11 +89,9 @@ export function calculate() {
         // Format the result if it's a valid number
         const numberResult = parseFloat(result);
         result = !isNaN(numberResult) ? formatLargeNumber(numberResult) : result;
-        console.log(`Number Result: ${result}`);
 
         // Set the display value to the result
         display.value = result;
-        console.log(`Final Value: ${display.value}`);
     } catch (error) {
         display.value = "Error"; // In case of an error, show error
     }
