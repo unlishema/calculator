@@ -287,7 +287,7 @@ async function simulateCopy() {
     const successMessage = document.getElementById('successMessage') as HTMLDivElement;
 
     const displayValue = display.value;
-    if (navigator.clipboard) {
+    if (false && navigator.clipboard) { // Temp bypass correct way to copy
         try {
             await navigator.clipboard.writeText(displayValue);
             console.log("Successfully copied to clipboard");
@@ -317,7 +317,7 @@ async function simulateCopy() {
 async function simulatePaste() {
     const successMessage = document.getElementById('successMessage') as HTMLDivElement;
 
-    if (navigator.clipboard) {
+    if (false && navigator.clipboard) { // Temp bypass correct way to copy
         try {
             const text = await navigator.clipboard.readText();
             const success = appendClipboardData(text);
