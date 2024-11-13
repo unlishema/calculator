@@ -326,7 +326,7 @@ async function fallbackCopy() {
 // Simulation of paste operation with fallback
 async function paste() {
     const successMessage = document.getElementById('successMessage') as HTMLDivElement;
-    if (navigator.clipboard) {
+    if (false && navigator.clipboard) { // FIXME User can't accept the paste so this won't work right now
         try {
             const text = await navigator.clipboard.readText();
             const success = appendClipboardData(text);
