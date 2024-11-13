@@ -32,7 +32,7 @@ export function setOperation(operation: string) {
     if (operatorRegex.test(trimmedValue.charAt(trimmedValue.length - 1))) {
         display.value = trimmedValue.slice(0, -1) + operation + " ";
     } else if (trimmedValue.length > 0) {
-        display.value += `${operation !== "." ? " " : ""}${operation}${operation !== "." ? " " : ""}`;
+        display.value += `${operation}`;
     }
 }
 
