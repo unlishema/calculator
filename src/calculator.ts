@@ -23,10 +23,12 @@ export function appendFunction(letter: string) {
 }
 
 export function setOperation(operation: string) {
+    // Get the locale-specific decimal separator
+    const decimalSeparator = getDecimalSeparator();
     const operatorRegex = /[+\-*/]/;
     const trimmedValue = display.value.trim();
 
-    if (awaitingInput && operation === ".") display.value = "0"; // Reset on decimal
+    if (awaitingInput && operation === decimalSeparator) display.value = "0"; // Reset on decimal
     awaitingInput = false;
 
     if (operatorRegex.test(trimmedValue.charAt(trimmedValue.length - 1))) {
