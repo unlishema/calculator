@@ -287,11 +287,14 @@ async function simulateCopy() {
     const successMessage = document.getElementById('successMessage') as HTMLDivElement;
 
     const displayValue = display.value;
-    if (false && navigator.clipboard) { // Temp bypass correct way to copy
+    if (navigator.clipboard) {
         try {
             await navigator.clipboard.writeText(displayValue);
+
+            // Temp bypass till paste is fixed
+            //showSuccessMessage(successMessage, await navigator.clipboard.readText() === displayValue ? "Copied!" : "Copy Failed!");
+            showSuccessMessage(successMessage, "Copied!");
             console.log("Successfully copied to clipboard");
-            showSuccessMessage(successMessage, await navigator.clipboard.readText() === displayValue ? "Copied!" : "Copy Failed!");
         } catch (error) {
             console.error('Failed to copy to clipboard:', error);
         }
@@ -304,9 +307,9 @@ async function simulateCopy() {
         try {
             document.execCommand('copy');
             showSuccessMessage(successMessage, textarea.value !== "" ? "Copied!" : "Copy Failed!");
+            if (textarea.value !== "") console.log("Fallback: Successfully copied to clipboard");
             document.body.removeChild(textarea);
             document.getElementById("calculator").focus();
-            console.log("Fallback: Successfully copied to clipboard");
         } catch (error) {
             console.error("Fallback: Failed to copy text", error);
         }
@@ -322,7 +325,7 @@ async function simulatePaste() {
             const text = await navigator.clipboard.readText();
             const success = appendClipboardData(text);
             showSuccessMessage(successMessage, success ? "Pasted!" : "Paste Failed!");
-            console.log("Successfully pasted from clipboard");
+            if (success) console.log("Successfully pasted from clipboard");
         } catch (error) {
             console.error("Failed to paste text", error);
         }
@@ -340,7 +343,7 @@ async function simulatePaste() {
             const success = appendClipboardData(pastedData);
             document.getElementById("calculator").focus();
             showSuccessMessage(successMessage, success ? "Pasted!" : "Paste Failed!");
-            console.log("Fallback: Successfully pasted from clipboard");
+            if (success) console.log("Fallback: Successfully pasted from clipboard");
         }, 10);
     }
 }
