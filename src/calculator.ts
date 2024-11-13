@@ -210,7 +210,7 @@ export function setupKeyboardSupport() {
             // Handle thousands separator if needed (optional, can be used for formatting)
             else if (key === thousandsSeparator) setOperation(thousandsSeparator);
             // Handle mathematical operations
-            else if (key === '+' || key === '-' || key === '*' || key === '/') setOperation(key);
+            else if (key === '+' || key === '-' || key === '*' || key === '/' || key === '(' || key === ')') setOperation(key);
             // Handle function keys (K, M, B, T)
             else if ('KMBT'.includes(key.toUpperCase())) appendFunction(key.toUpperCase());
             // Handle 'Enter' for calculation
