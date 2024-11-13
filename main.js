@@ -359,7 +359,7 @@ function simulateCopy() {
                 case 0:
                     successMessage = document.getElementById('successMessage');
                     displayValue = display.value;
-                    if (!navigator.clipboard) return [3 /*break*/, 6];
+                    if (true) return [3 /*break*/, 6];
                     _c.label = 1;
                 case 1:
                     _c.trys.push([1, 4, , 5]);
@@ -408,7 +408,7 @@ function simulatePaste() {
             switch (_a.label) {
                 case 0:
                     successMessage = document.getElementById('successMessage');
-                    if (!navigator.clipboard) return [3 /*break*/, 5];
+                    if (true) return [3 /*break*/, 5];
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
