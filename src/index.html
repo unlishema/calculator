@@ -13,6 +13,7 @@
 		<a onclick="window.open(`https://runeapps.org/alt1`);">Download Here</a> or
 		<a onclick="window.open(`alt1://addapp/https://calc.unlishema.org/appconfig.json`);">Add App to Alt1</a>
 	</div>
+	<div id="successMessage" class="success-message nis nistext" style="display: none;"></div>
 	<table id="calculator" tabindex="0">
 		<tr>
 			<td colspan="6">
@@ -110,6 +111,10 @@
 			</td>
 		</tr>
 	</table>
+	<ul id="contextMenu" class="context-menu nis" style="display:none;">
+		<li class="nistext" id="copyOption" title="Copy (Ctrl+C)">Copy (Ctrl+C)</li>
+		<li class="nistext" id="pasteOption" title="Paste (Ctrl+V)">Paste (Ctrl+V)</li>
+	</ul>
 </body>
 <script src="./main.js"></script>
 
