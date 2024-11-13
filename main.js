@@ -353,32 +353,30 @@ function setupClipboardSupport() {
 // Simulation of copy operation with fallback
 function simulateCopy() {
     return __awaiter(this, void 0, void 0, function () {
-        var successMessage, displayValue, _a, _b, error_1, textarea;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var successMessage, displayValue, error_1, textarea;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
                     successMessage = document.getElementById('successMessage');
                     displayValue = display.value;
-                    if (true) return [3 /*break*/, 6];
-                    _c.label = 1;
+                    if (!navigator.clipboard) return [3 /*break*/, 5];
+                    _a.label = 1;
                 case 1:
-                    _c.trys.push([1, 4, , 5]);
+                    _a.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, navigator.clipboard.writeText(displayValue)];
                 case 2:
-                    _c.sent();
+                    _a.sent();
                     console.log("Successfully copied to clipboard");
-                    _a = showSuccessMessage;
-                    _b = [successMessage];
-                    return [4 /*yield*/, navigator.clipboard.readText()];
+                    // Temp bypass till paste is fixed
+                    //showSuccessMessage(successMessage, await navigator.clipboard.readText() === displayValue ? "Copied!" : "Copy Failed!");
+                    showSuccessMessage(successMessage, "Copied!");
+                    return [3 /*break*/, 4];
                 case 3:
-                    _a.apply(void 0, _b.concat([(_c.sent()) === displayValue ? "Copied!" : "Copy Failed!"]));
-                    return [3 /*break*/, 5];
-                case 4:
-                    error_1 = _c.sent();
+                    error_1 = _a.sent();
                     console.error('Failed to copy to clipboard:', error_1);
-                    return [3 /*break*/, 5];
-                case 5: return [3 /*break*/, 7];
-                case 6:
+                    return [3 /*break*/, 4];
+                case 4: return [3 /*break*/, 6];
+                case 5:
                     textarea = document.createElement('textarea');
                     textarea.style.opacity = '0';
                     document.body.appendChild(textarea);
@@ -394,8 +392,8 @@ function simulateCopy() {
                     catch (error) {
                         console.error("Fallback: Failed to copy text", error);
                     }
-                    _c.label = 7;
-                case 7: return [2 /*return*/];
+                    _a.label = 6;
+                case 6: return [2 /*return*/];
             }
         });
     });
