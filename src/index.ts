@@ -9,7 +9,8 @@ const DEFAULT_SETTINGS_HEIGHT = 200;
 if (window.alt1) {
 	alt1.identifyAppUrl("./appconfig.json");
 } else {
-	document.getElementById("addtoalt1").style.display = "block";
+	const urlParams = new URLSearchParams(window.location.search);
+	if (!urlParams.has('bypass_warning')) document.getElementById("addtoalt1").style.display = "block";
 }
 
 // Add settings button listener
