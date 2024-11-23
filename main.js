@@ -616,7 +616,9 @@ if (window.alt1) {
     alt1.identifyAppUrl("./appconfig.json");
 }
 else {
-    document.getElementById("addtoalt1").style.display = "block";
+    var urlParams = new URLSearchParams(window.location.search);
+    if (!urlParams.has('bypass_warning'))
+        document.getElementById("addtoalt1").style.display = "block";
 }
 // Add settings button listener
 document.getElementById("status").addEventListener("click", function () {

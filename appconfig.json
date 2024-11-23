@@ -8,8 +8,8 @@
 	"defaultHeight": 189,
 	"minWidth": 206,
 	"minHeight": 189,
-	"maxWidth": 206,
-	"maxHeight": 189,
+	"maxWidth": 1000,
+	"maxHeight": 1000,
 	"requestHandlers": [],
 	"activators": []
 }
