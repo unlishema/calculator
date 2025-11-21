@@ -1,0 +1,12 @@
+{
+  "operators-color": "#cd8f0a",
+  "numbers-color": "#ffffff",
+  "output-alpha": "0.75",
+  "operators-alpha": "1",
+  "output-color": "#ffffff",
+  "numbers-alpha": "0.85",
+  "buttons-alpha": ".18",
+  "buttons-color": "#245245",
+  "functions-alpha": "1",
+  "functions-color": "#aa0808"
+}
