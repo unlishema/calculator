@@ -1,6 +1,6 @@
 {
 	"appName": "Calculator",
-	"description": "A simple calculator designed to work with Alt1 Toolkit",
+	"description": "A fast, lightweight Alt1 calculator designed specifically for RuneScape players—ideal for quick math, skilling calculations, clue solving, and in-game number crunching without ever leaving the game window.",
 	"appUrl": "./index.html",
 	"configUrl": "./appconfig.json",
 	"iconUrl": "./images/icon.png",
