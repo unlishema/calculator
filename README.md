@@ -1,6 +1,6 @@
 # Calculator for RuneScape via Alt1
 
-**A fast, lightweight Alt1 calculator designed specifically for RuneScape players—ideal for quick math, skilling calculations, clue solving, and in-game number crunching without ever leaving the game window.**
+**A fast, lightweight Alt1 calculator designed specifically for RuneScape players Ideal for quick math, skilling calculations, and in-game number crunching without ever leaving the game window.**
 
 ## Features
 - **Always-on-top Alt1 window** for seamless use while playing RuneScape.
